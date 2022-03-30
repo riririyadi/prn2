@@ -1,0 +1,80 @@
+/* The side navigation menu */
+.sidenav {
+  height: 100%; /* 100% Full-height */
+  width: 240px; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 5; /* Stay on top */
+  top: 50; /* Stay at the top */
+  left: 0;
+  overflow-x: scroll; /* Disable horizontal scroll */
+  padding-bottom: 50px; /* Place content 60px from the top */
+  
+}
+.sidenav-collapsed {
+  height: 100%; /* 100% Full-height */
+  width: 240px; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 5; /* Stay on top */
+  top: 50; /* Stay at the top */
+  left: -100%;
+  overflow-x: scroll; /* Disable horizontal scroll */
+  padding-bottom: 50px; /* Place content 60px from the top */
+ 
+  transition: 350ms;
+}
+
+.sidenav-collapsed.active {
+  left: 0;
+  transition: 350ms;
+}
+
+.nav-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 7px;
+}
+
+.nav-menu-bright:hover {
+  background-color: #d8d8d8;
+}
+
+.nav-menu-dark:hover {
+  background-color: #222222;
+}
+
+.rotate {
+  -moz-transition: transform 0.1s linear;
+  -webkit-transition: transform 0.1s linear;
+  transition: transform 0.1s linear;
+}
+.rotate.down {
+  -moz-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.nowrap-text {
+  white-space: pre;
+}
+/* .sidenav a {
+  display: block;
+  margin: 10px 20px;
+}
+
+.navlink {
+  padding: 5px;
+  margin: 0 5px;
+  border-radius: 10px;
+}
+
+.navlink:hover {
+  background-color: #ff4a53;
+  color: white;
+}
+
+.route-name::first-letter {
+  text-transform: capitalize;
+} */
