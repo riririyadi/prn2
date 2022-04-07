@@ -11,15 +11,10 @@ interface IViewLogsProps {
 export const ViewLogs: FC<IViewLogsProps> = ({ open, close }) => {
   const column = [{ column: "Log Date" }, { column: "LogMessage" }];
   return (
-    <Modal open={open} close={close}>
-      <div style={{ padding: "1rem", backgroundColor: "white" }}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ textAlign: "left" }}>Logs</div>
-          <div onClick={close}>
-            <MdClose />
-          </div>
-        </div>
+    <Modal open={open} close={close} title="View Logs">
+      <div style={{ padding: "1rem" }}>
         <TableGrid column={column} heightPercentage={70}>
+          <tbody>
           <tr>
             <td className="text-nowrap">11-12-2021</td>
             <td className="text-nowrap">This is log message</td>
@@ -28,6 +23,7 @@ export const ViewLogs: FC<IViewLogsProps> = ({ open, close }) => {
             <td className="text-nowrap">11-12-2021</td>
             <td className="text-nowrap">This is log message</td>
           </tr>
+          </tbody>
         </TableGrid>
       </div>
     </Modal>

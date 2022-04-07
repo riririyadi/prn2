@@ -25,16 +25,12 @@ export const ViewResourceDetail: FC<IViewResourceDetailProps> = ({
     { column: "Created By" },
   ];
   return (
-    <Modal open={open} close={close}>
-      <div style={{ padding: "1rem", backgroundColor: "white" }}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ textAlign: "left" }}>List Open New Resource Detail</div>
-          <div onClick={close}>
-            <MdClose />
-          </div>
-        </div>
+    <Modal open={open} close={close} title="List Open New Resource Detail">
+      <div style={{ padding: "1rem"}}>
+     
         <div style={{ border: "1px solid #e8e8e8" }}>
           <TableGrid column={column} heightPercentage={80}>
+            <tbody>
             <tr>
               <td>234784574839</td>
               <td>09889897832748329</td>
@@ -59,6 +55,7 @@ export const ViewResourceDetail: FC<IViewResourceDetailProps> = ({
               <td>12-23-2322</td>
               <td>KayO</td>
             </tr>
+            </tbody>
           </TableGrid>
         </div>
       </div>

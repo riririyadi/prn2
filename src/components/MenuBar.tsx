@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
-import { AiOutlineDelete } from 'react-icons/ai';
-import { CgLastpass, CgPassword, CgSandClock } from 'react-icons/cg';
-import { FaUserLock } from 'react-icons/fa';
-import { FiEdit, FiRefreshCcw, FiSearch } from 'react-icons/fi';
-import { IoMdTimer } from 'react-icons/io';
-import { VscNewFile, VscSearch } from 'react-icons/vsc';
-import { ThemeCtx } from '../pages/Home';
+import React, { useContext } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
+import { CgLastpass, CgPassword, CgSandClock } from "react-icons/cg";
+import { FaSearch, FaUserLock } from "react-icons/fa";
+import { FiEdit, FiRefreshCcw, FiSearch } from "react-icons/fi";
+import { IoMdTimer } from "react-icons/io";
+import { VscNewFile, VscSearch } from "react-icons/vsc";
+import { ThemeCtx } from "../pages/Home";
 
 export const MenuBar = ({
   searchQuery,
@@ -32,61 +32,53 @@ export const MenuBar = ({
   children?: JSX.Element;
   hiddenSearchBar?: boolean;
 }) => {
-  const [darkMode, setDarkMode] = useContext(ThemeCtx);
-
   return (
-    <div className='menu__bar'>
-      <div className='menu__bar__item'>
+    <div className="menu__bar">
+      <div className="menu__bar__item">
         <button
-          hidden={hidden === 'New'}
-          className='menu-icon'
-          data-bs-toggle='tooltip'
-          data-bs-placement='top'
-          title='New'
+          hidden={hidden === "New"}
+          className="menu-icon"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="New"
+          onClick={handleAdd}
         >
-          <VscNewFile
-            size={20}
-            onClick={handleAdd}
-            className={darkMode ? 'dark' : 'bright'}
-          />
+          <VscNewFile size={20} />
         </button>
 
         <button
-          hidden={hidden === 'Edit'}
-          className='menu-icon'
-          data-bs-toggle='tooltip'
-          data-bs-placement='top'
-          title='Edit'
+          hidden={hidden === "Edit"}
+          className="menu-icon"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="Edit"
+          onClick={handleEdit}
         >
-          <FiEdit
-            size={20}
-            onClick={handleEdit}
-            className={darkMode ? 'dark' : 'bright'}
-          />
+          <FiEdit size={20} />
         </button>
         <button
-          hidden={hidden === 'Refresh'}
-          className='menu-icon'
-          data-bs-toggle='tooltip'
-          data-bs-placement='top'
-          title='Refresh'
+          hidden={hidden === "Refresh"}
+          className="menu-icon"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="Refresh"
           onClick={handleRefresh}
         >
-          <FiRefreshCcw size={20} className={darkMode ? 'dark' : 'bright'} />
+          <FiRefreshCcw size={20} />
         </button>
         <button
-          hidden={hidden === 'Delete'}
-          className='menu-icon'
-          data-bs-toggle='tooltip'
-          data-bs-placement='top'
-          title='Delete'
+          hidden={hidden === "Delete"}
+          className="menu-icon"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="Delete"
           onClick={handleDelete}
         >
-          <AiOutlineDelete size={20} className={darkMode ? 'dark' : 'bright'} />
+          <AiOutlineDelete size={20} />
         </button>
         {children}
       </div>
-      <div hidden={hiddenSearchBar} className='menu__bar__item'>
+      <div hidden={hiddenSearchBar} className="menu__bar__item">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -95,20 +87,21 @@ export const MenuBar = ({
             setPageNumber(1);
           }}
         >
-          <input
-            className='input-field'
-            placeholder='enter keyword'
-            type='search'
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button type='submit' className='btn-no-style'>
-            <FiSearch
-              size={20}
-              style={{ marginRight: '10px' }}
-              className={darkMode ? 'dark' : 'bright'}
-            />
-          </button>
+          <div className="container-box">
+            <div className="search-box">
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Search.."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+              />
+
+              <button className="search-button" type="submit">
+                <FaSearch />
+              </button>
+            </div>
+          </div>
         </form>
       </div>
     </div>

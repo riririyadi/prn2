@@ -1,21 +1,21 @@
-import axios from 'axios';
-import md5 from 'md5';
-import moment from 'moment';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { AiOutlineUsergroupAdd } from 'react-icons/ai';
-import { CgLastpass, CgSandClock } from 'react-icons/cg';
-import { FaUserLock } from 'react-icons/fa';
-import { FormIdContext } from '../../components/MainArea';
-import { MenuBar } from '../../components/MenuBar';
-import {Modal} from '../../components/Modal';
-import { Paging } from '../../components/Paging';
-import { TableGrid } from '../../components/TableGrid';
-import { ThemeCtx } from '../Home';
-import AddUserResponsibilities from './AddUserResponsibilities';
-import ChangeUserPassword from './ChangeUserPassword';
-import EditUser from './EditUser';
-import ExpireUser from './ExpireUser';
-import LockUser from './LockUser';
+import axios from "axios";
+import md5 from "md5";
+import moment from "moment";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { AiOutlineUsergroupAdd } from "react-icons/ai";
+import { CgLastpass, CgSandClock } from "react-icons/cg";
+import { FaUserLock } from "react-icons/fa";
+import { FormIdContext } from "../../components/MainArea";
+import { MenuBar } from "../../components/MenuBar";
+import { Modal } from "../../components/Modal";
+import { Paging } from "../../components/Paging";
+import { TableGrid } from "../../components/TableGrid";
+import { ThemeCtx } from "../Home";
+import AddUserResponsibilities from "./AddUserResponsibilities";
+import ChangeUserPassword from "./ChangeUserPassword";
+import EditUser from "./EditUser";
+import ExpireUser from "./ExpireUser";
+import LockUser from "./LockUser";
 
 const baseURL: string = process.env.REACT_APP_BASE_URL as string;
 const secretKey: string = process.env.REACT_APP_SECRET_KEY as string;
@@ -48,21 +48,21 @@ export interface User {
 export default function Users() {
   const [darkMode, setDarkMode] = useContext(ThemeCtx);
   const formId = React.useContext(FormIdContext);
-  const userData = localStorage.getItem('user_data');
+  const userData = localStorage.getItem("user_data");
   const persistedUserData = userData
     ? JSON.parse(userData)
     : {
         user_id: 0,
-        user_description: '',
+        user_description: "",
         company_id: 0,
-        company_code: '',
-        company_description: '',
-        session: '',
+        company_code: "",
+        company_description: "",
+        session: "",
       };
 
   const [user, setUser] = useState(persistedUserData);
-  const [keyword, setKeyword] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [keyword, setKeyword] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalRecord, setTotalRecord] = useState(0);
@@ -79,80 +79,80 @@ export default function Users() {
   const [selectedRowData, setSelectedRowData] = useState<User>({
     company_id: 0,
     user_id: 0,
-    user_name: '',
-    user_password: '',
-    confirm_password: '',
-    user_description: '',
-    email: '',
-    phone_number: '',
-    start_effective_date: '',
-    end_effective_date: '',
+    user_name: "",
+    user_password: "",
+    confirm_password: "",
+    user_description: "",
+    email: "",
+    phone_number: "",
+    start_effective_date: "",
+    end_effective_date: "",
     locked: false,
     first_login: false,
     life_time: 0,
-    last_change_password: '',
+    last_change_password: "",
     how_many_failed: 0,
-    creation_date: '',
+    creation_date: "",
     created_by: 0,
-    created_by_name: '',
-    last_update_date: '',
+    created_by_name: "",
+    last_update_date: "",
     last_updated_by: 0,
-    last_updated_by_name: '',
+    last_updated_by_name: "",
   });
 
   const [data, setData] = useState<User[]>([]);
-  const [errorTable, setErrorTable] = useState('');
+  const [errorTable, setErrorTable] = useState("");
   const column = [
     {
-      column: 'User Name',
+      column: "User Name",
     },
     {
-      column: 'User Description',
+      column: "User Description",
     },
     {
-      column: 'Email',
+      column: "Email",
     },
     {
-      column: 'Phone Number',
+      column: "Phone Number",
     },
     {
-      column: 'Start Effective Date',
+      column: "Start Effective Date",
     },
     {
-      column: 'End Effective Date',
+      column: "End Effective Date",
     },
     {
-      column: 'Locked',
+      column: "Locked",
     },
     {
-      column: 'First Login',
+      column: "First Login",
     },
     {
-      column: 'Life Time',
+      column: "Life Time",
     },
     {
-      column: 'Last Change Password',
+      column: "Last Change Password",
     },
     {
-      column: 'Creation Date',
+      column: "Creation Date",
     },
     {
-      column: 'Creation By',
+      column: "Creation By",
     },
     {
-      column: 'Last Update Date',
+      column: "Last Update Date",
     },
     {
-      column: 'Last Updated By Name',
+      column: "Last Updated By Name",
     },
   ];
 
   useEffect(() => {
-    const functionName = 'SELECT_ALLOWED';
+    const functionName = "SELECT_ALLOWED";
     const url = `${baseURL}/prn/fnd/users/oncount`;
-    const timestamp = moment().format('YYYYMMDDHHmmss');
+    const timestamp = moment().format("YYYYMMDDHHmmss");
     const { responsibility_id, group_function_id } = JSON.parse(
-      localStorage.getItem('responsibility') || 'null'
+      localStorage.getItem("responsibility") || "null"
     );
     let md5hash = md5(
       `${user.company_id}${responsibility_id}${user.user_id}${group_function_id}${functionName}${timestamp}${secretKey}`
@@ -183,8 +183,8 @@ export default function Users() {
         },
         {
           headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
+            "Content-Type": "application/json",
+            Accept: "application/json",
             apikey: apiKey,
             clientsignature: md5hash,
           },
@@ -198,11 +198,11 @@ export default function Users() {
   }, [keyword, pageNumber, pageSize, refresh]);
 
   useEffect(() => {
-    const functionName = 'SELECT_ALLOWED';
+    const functionName = "SELECT_ALLOWED";
     const url = `${baseURL}/prn/fnd/users/onselect`;
-    const timestamp = moment().format('YYYYMMDDHHmmss');
+    const timestamp = moment().format("YYYYMMDDHHmmss");
     const { responsibility_id, group_function_id } = JSON.parse(
-      localStorage.getItem('responsibility') || 'null'
+      localStorage.getItem("responsibility") || "null"
     );
     let md5hash = md5(
       `${user.company_id}${responsibility_id}${user.user_id}${group_function_id}${functionName}${timestamp}${secretKey}`
@@ -235,8 +235,8 @@ export default function Users() {
         },
         {
           headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
+            "Content-Type": "application/json",
+            Accept: "application/json",
             apikey: apiKey,
             clientsignature: md5hash,
           },
@@ -268,25 +268,25 @@ export default function Users() {
     setSelectedRowData({
       company_id: 0,
       user_id: 0,
-      user_name: '',
-      user_password: '',
-      confirm_password: '',
-      user_description: '',
-      email: '',
-      phone_number: '',
-      start_effective_date: '',
-      end_effective_date: '',
+      user_name: "",
+      user_password: "",
+      confirm_password: "",
+      user_description: "",
+      email: "",
+      phone_number: "",
+      start_effective_date: "",
+      end_effective_date: "",
       locked: false,
       first_login: false,
       life_time: 0,
-      last_change_password: '',
+      last_change_password: "",
       how_many_failed: 0,
-      creation_date: '',
+      creation_date: "",
       created_by: 0,
-      created_by_name: '',
-      last_update_date: '',
+      created_by_name: "",
+      last_update_date: "",
       last_updated_by: 0,
-      last_updated_by_name: '',
+      last_updated_by_name: "",
     });
     setOpenEdit(true);
   };
@@ -298,7 +298,7 @@ export default function Users() {
     const type = e.target.type;
     setSelectedRowData((prevData) => ({
       ...prevData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -312,7 +312,7 @@ export default function Users() {
 
   const handleRefresh = () => {
     setRefresh(!refresh);
-    setKeyword('');
+    setKeyword("");
     setPageNumber(1);
   };
 
@@ -344,18 +344,18 @@ export default function Users() {
   const refs = useRef(new Array(pageSize));
 
   const handleKeyDown = (evt: React.KeyboardEvent<HTMLTableRowElement>) => {
-    if (evt.key === 'ArrowUp' && activeIndex! >= 0) {
+    if (evt.key === "ArrowUp" && activeIndex! >= 0) {
       if (activeIndex! > 0) {
         setActiveIndex(activeIndex! - 1);
       }
     }
-    if (evt.key === 'ArrowDown' && activeIndex! >= 0) {
+    if (evt.key === "ArrowDown" && activeIndex! >= 0) {
       if (activeIndex! < 9) {
         setActiveIndex(activeIndex! + 1);
       }
     }
 
-    if (evt.key === 'Enter') {
+    if (evt.key === "Enter") {
       const index = refs.current[activeIndex!].tabIndex;
       setSelectedRowData(data[index]);
     }
@@ -366,10 +366,7 @@ export default function Users() {
   }, [selectedRowData]);
 
   return (
-    <div
-      className='component'
-      
-    >
+    <div className="component">
       <MenuBar
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -381,126 +378,127 @@ export default function Users() {
       >
         <>
           <button
-            className='menu-icon'
-            data-bs-toggle='tooltip'
-            data-bs-placement='top'
-            title='Lock or Unlock User'
+            className="menu-icon"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="Lock or Unlock User"
             onClick={handleOpenLocked}
           >
-            <FaUserLock size={24} className={darkMode ? 'dark' : 'bright'} />
+            <FaUserLock size={24} className={darkMode ? "dark" : "bright"} />
           </button>
           <button
-            className='menu-icon'
-            data-bs-toggle='tooltip'
-            data-bs-placement='top'
-            title='Change Password'
+            className="menu-icon"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="Change Password"
             onClick={handleOpenChangePassword}
           >
-            <CgLastpass size={24} className={darkMode ? 'dark' : 'bright'} />
+            <CgLastpass size={24} className={darkMode ? "dark" : "bright"} />
           </button>
           <button
-            className='menu-icon'
-            data-bs-toggle='tooltip'
-            data-bs-placement='top'
-            title='Expire User'
+            className="menu-icon"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="Expire User"
             onClick={handleOpenExpire}
           >
-            <CgSandClock size={24} className={darkMode ? 'dark' : 'bright'} />
+            <CgSandClock size={24} className={darkMode ? "dark" : "bright"} />
           </button>
           <button
-            className='menu-icon'
-            data-bs-toggle='tooltip'
-            data-bs-placement='top'
-            title='Add Responsibilities'
+            className="menu-icon"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="Add Responsibilities"
             onClick={handleOpenAddResponsibility}
           >
             <AiOutlineUsergroupAdd
               size={24}
-              className={darkMode ? 'dark' : 'bright'}
+              className={darkMode ? "dark" : "bright"}
             />
           </button>
         </>
       </MenuBar>
       <TableGrid column={column}>
         <tbody>
-        {data &&
-          data.map((u, i) => (
-            <tr
-              // className='frezee'
-              ref={(el) => (refs.current[i] = el)}
-              key={u.user_id}
-              onClick={() => {
-                setSelectedRowId(i);
-                setSelectedRowData(u);
-                setActiveIndex(i);
-              }}
-              tabIndex={i}
-              style={{
-                backgroundColor:
-                  selectedRowData.user_id === u.user_id ? 'pink' : '',
-                border: activeIndex === i ? '1px solid black' : 'none',
-              }}
-              onKeyDown={(evt) => handleKeyDown(evt)}
-            >
-              <td
-                className='text-nowrap'
-                style={{
-                  backgroundColor:
-                    selectedRowData.user_id === u.user_id ? 'pink' : '',
-                  borderLeft: activeIndex === i ? '1px solid black' : 'none',
-                  borderBottom: activeIndex === i ? '1px solid black' : 'none',
-                  borderTop: activeIndex === i ? '1px solid black' : 'none',
-                }}
-              >
-                {u.user_name}
-              </td>
-              <td
-                className='text-nowrap'
-                style={{
-                  backgroundColor:
-                    selectedRowData.user_id === u.user_id ? 'pink' : '',
+          {data &&
+            data.map((u, i) => (
+              <tr
+                // className='frezee'
 
-                  borderTop: activeIndex === i ? '1px solid black' : 'none',
-                  borderBottom: activeIndex === i ? '1px solid black' : 'none',
+                onClick={() => {
+                  setSelectedRowId(i);
+                  setSelectedRowData(u);
+                }}
+                tabIndex={i}
+                style={{
+                  backgroundColor:
+                    selectedRowData.user_id === u.user_id ? "pink" : "",
+                  border: activeIndex === i ? "1px solid black" : "none",
                 }}
               >
-                {u.user_description}
-              </td>
-              <td className='text-nowrap'>{u.email}</td>
-              <td className='text-nowrap'>{u.phone_number}</td>
-              <td className='text-nowrap'>
-                {u.start_effective_date
-                  ? moment(u.start_effective_date).format('DD-MM-YYYY HH:mm:ss')
-                  : u.start_effective_date}
-              </td>
-              <td className='text-nowrap'>
-                {u.end_effective_date
-                  ? moment(u.end_effective_date).format('DD-MM-YYYY HH:mm:ss')
-                  : u.end_effective_date}
-              </td>
-              <td>
-                <input type='checkbox' checked={u.locked} readOnly />
-              </td>
-              <td>
-                <input type='checkbox' checked={u.first_login} readOnly />
-              </td>
-              <td className='text-nowrap'>{u.life_time} days</td>
-              <td className='text-nowrap'>{u.last_change_password}</td>
-              <td className='text-nowrap'>
-                {u.creation_date
-                  ? moment(u.creation_date).format('DD-MM-YYYY HH:mm:ss')
-                  : u.creation_date}
-              </td>
-              <td className='text-nowrap'>{u.created_by_name}</td>
-              <td className='text-nowrap'>
-                {u.last_update_date
-                  ? moment(u.last_update_date).format('DD-MM-YYYY HH:mm:ss')
-                  : u.last_update_date}
-              </td>
-              <td className='text-nowrap'>{u.last_updated_by_name}</td>
-            </tr>
-          ))}
-          </tbody>
+                <td
+                  className="text-nowrap"
+                  style={{
+                    backgroundColor:
+                      selectedRowData.user_id === u.user_id ? "pink" : "",
+                    borderLeft: activeIndex === i ? "1px solid black" : "none",
+                    borderBottom:
+                      activeIndex === i ? "1px solid black" : "none",
+                    borderTop: activeIndex === i ? "1px solid black" : "none",
+                  }}
+                >
+                  {u.user_name}
+                </td>
+                <td
+                  className="text-nowrap"
+                  style={{
+                    backgroundColor:
+                      selectedRowData.user_id === u.user_id ? "pink" : "",
+
+                    borderTop: activeIndex === i ? "1px solid black" : "none",
+                    borderBottom:
+                      activeIndex === i ? "1px solid black" : "none",
+                  }}
+                >
+                  {u.user_description}
+                </td>
+                <td className="text-nowrap">{u.email}</td>
+                <td className="text-nowrap">{u.phone_number}</td>
+                <td className="text-nowrap">
+                  {u.start_effective_date
+                    ? moment(u.start_effective_date).format(
+                        "DD-MM-YYYY HH:mm:ss"
+                      )
+                    : u.start_effective_date}
+                </td>
+                <td className="text-nowrap">
+                  {u.end_effective_date
+                    ? moment(u.end_effective_date).format("DD-MM-YYYY HH:mm:ss")
+                    : u.end_effective_date}
+                </td>
+                <td>
+                  <input type="checkbox" checked={u.locked} readOnly />
+                </td>
+                <td>
+                  <input type="checkbox" checked={u.first_login} readOnly />
+                </td>
+                <td className="text-nowrap">{u.life_time} days</td>
+                <td className="text-nowrap">{u.last_change_password}</td>
+                <td className="text-nowrap">
+                  {u.creation_date
+                    ? moment(u.creation_date).format("DD-MM-YYYY HH:mm:ss")
+                    : u.creation_date}
+                </td>
+                <td className="text-nowrap">{u.created_by_name}</td>
+                <td className="text-nowrap">
+                  {u.last_update_date
+                    ? moment(u.last_update_date).format("DD-MM-YYYY HH:mm:ss")
+                    : u.last_update_date}
+                </td>
+                <td className="text-nowrap">{u.last_updated_by_name}</td>
+              </tr>
+            ))}
+        </tbody>
       </TableGrid>
       <Paging
         pageNumber={pageNumber}
@@ -519,14 +517,14 @@ export default function Users() {
       <Modal open={openEditFailed} close={() => setOpenEditFailed(false)}>
         <div
           style={{
-            backgroundColor: 'white',
-            padding: '20px',
-            width: '400px',
-            borderRadius: '10px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
+            backgroundColor: "white",
+            padding: "20px",
+            width: "400px",
+            borderRadius: "10px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
           }}
         >
           <p>Select Row First Please!</p>

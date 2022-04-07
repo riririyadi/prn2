@@ -30,6 +30,10 @@ interface BusinessUnits {
 }
 
 export default function Navbar(props: any) {
+
+
+  const {bu_id, bu_code, bu_description} = props.bu;
+
   const auth = useAuth();
   const { width } = useWindowSize();
   const formId = useContext(FormIdContext);
@@ -48,126 +52,12 @@ export default function Navbar(props: any) {
         session: "",
       };
 
+  
   const [user, setUser] = useState(persistedUserData);
-  const [darkMode, setDarkMode] = useContext(ThemeCtx);
 
-  const {
-    company_code,
-    company_description,
-    company_id,
-    session,
-    user_description,
-    user_id,
-  } = props;
-
-  const [isLoading, setIsLoading] = useState(false);
   const [openChangePassword, setOpenChangePassword] = useState(false);
-  const [keywordBU, setKeywordBU] = useState("%");
-  const [totalRecordBU, setTotalRecordBU] = useState(null);
-  const [pageNumberBU, setPageNumberBU] = useState(1);
-  const [pageSizeBU, setPageSizeBU] = useState(10);
-  const [isOpenBU, setIsOpenBU] = useState(false);
-  const [businessUnits, setBusinessUnits] = useState<BusinessUnits[]>([]);
 
   let navigate = useNavigate();
-
-  const countBusinessUnits = useCallback(() => {
-    setIsLoading(true);
-    let timestamp = moment().format("YYYYMMDDHHmmss");
-    let { responsibility_id } = JSON.parse(
-      localStorage.getItem("responsibility") || "null"
-    );
-    let md5hash = md5(
-      `${company_id}${user_id}${responsibility_id}${timestamp}${secretKey}`
-    );
-    let url = `${baseURL}/prn/fnd/users/oncountbu`;
-    axios
-      .post(
-        url,
-        {
-          timestamp,
-          company_id: company_id,
-          user_id: user_id,
-          responsibility_id,
-          keyword: keywordBU,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            apikey: apiKey,
-            clientsignature: md5hash,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-        setTotalRecordBU(response.data.total_record);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoading(false);
-      });
-  }, [keywordBU, company_id, user_id]);
-
-  const getListOfBusinessUnits = useCallback(() => {
-    setIsLoading(true);
-    let timestamp = moment().format("YYYYMMDDHHmmss");
-    let { responsibility_id } = JSON.parse(
-      localStorage.getItem("responsibility") || "null"
-    );
-
-    let md5hash = md5(
-      `${company_id}${user_id}${responsibility_id}${timestamp}${secretKey}`
-    );
-    let url = `${baseURL}/prn/fnd/users/onselectbu`;
-
-    axios
-      .post(
-        url,
-        {
-          timestamp,
-          company_id: company_id,
-          user_id: user_id,
-          responsibility_id,
-          keyword: keywordBU,
-          pagenumber: pageNumberBU,
-          pagesize: pageSizeBU,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            apikey: apiKey,
-            clientsignature: md5hash,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-        setIsLoading(false);
-        setBusinessUnits(response.data.Data);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoading(false);
-      });
-  }, [keywordBU, pageNumberBU, pageSizeBU, company_id, user_id]);
-
-  const PageInfoBU = () => {
-    return (
-      <span>
-        {(pageNumberBU - 1) * pageSizeBU + 1} -{" "}
-        {pageNumberBU * pageSizeBU > totalRecordBU! ? (
-          <span>{totalRecordBU}</span>
-        ) : (
-          <span>{pageNumberBU * pageSizeBU}</span>
-        )}{" "}
-        / {totalRecordBU}
-      </span>
-    );
-  };
 
   return (
     <>
@@ -202,7 +92,14 @@ export default function Navbar(props: any) {
             src="https://www.telkomsel.com/sites/default/files/mainlogo-v3.png"
           />
         </div>
-        <div>Company: {company_description}</div>
+        <div style={{fontSize:"10pt"}}>
+          <div><b>Company: <i>{user.company_description}</i></b></div>
+          {bu_id !== 0 && (
+            <div>
+              <b>Business Unit: <i>{bu_code} - {bu_description}</i></b>
+            </div>
+          )}
+        </div>
         <div style={{ marginRight: "20px" }}>
           <div className="dropdown">
             <button
@@ -214,7 +111,7 @@ export default function Navbar(props: any) {
               aria-expanded="false"
             >
               <FaUserCircle size={24} />{" "}
-              {width >= 768 && <>{user_description}</>}
+              {width >= 768 && <>{user.user_description}</>}
             </button>
             <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
               <li>
@@ -235,11 +132,7 @@ export default function Navbar(props: any) {
                   className="dropdown-item"
                   type="button"
                   style={{ fontSize: "11pt" }}
-                  onClick={() => {
-                    setIsOpenBU(true);
-                    getListOfBusinessUnits();
-                    countBusinessUnits();
-                  }}
+                  onClick={props.openBU}
                 >
                   <IoIosBusiness />{" "}
                   <span style={{ marginLeft: "10px" }}>
@@ -277,117 +170,6 @@ export default function Navbar(props: any) {
           </div>
         </div>{" "}
       </nav>
-      <Modal open={isOpenBU} close={() => setIsOpenBU(false)} title="List of Business Units">
-        <div>
-          <VscSearch size={24} style={{ marginRight: "10px" }} />
-          <input
-            value={keywordBU}
-            placeholder="Enter a keyword"
-            onChange={(e) => {}}
-          />
-          {isLoading ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Loader />
-            </div>
-          ) : (
-            <table className="table table-striped table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">No</th>
-                  <th scope="col">BU Code</th>
-                  <th scope="col">BU Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {businessUnits &&
-                  businessUnits.map((bu, i) => (
-                    <tr key={bu.bu_id}>
-                      <th scope="row">
-                        {(pageNumberBU - 1) * pageSizeBU + (i + 1)}
-                      </th>
-                      <td>{bu.bu_code}</td>
-                      <td>{bu.bu_description}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          )}
-          {!businessUnits && <div className="text-center">No data</div>}
-          <div className="d-flex justify-content-between">
-            <div>
-              <button
-                onClick={() => {
-                  if (pageNumberBU > 1) {
-                    setPageNumberBU(pageNumberBU - 1);
-                    getListOfBusinessUnits();
-                  }
-                }}
-                style={{
-                  border: "none",
-                  backgroundColor: "#d2d2d2",
-                  padding: "5px 12px",
-                  borderRadius: "50%",
-                  marginRight: "10px",
-                }}
-              >
-                &lt;
-              </button>
-              <button
-                onClick={() => {
-                  setPageNumberBU(pageNumberBU + 1);
-                  getListOfBusinessUnits();
-                }}
-                style={{
-                  border: "none",
-                  backgroundColor: "#d2d2d2",
-                  padding: "5px 12px",
-                  borderRadius: "50%",
-                  marginRight: "10px",
-                }}
-              >
-                &gt;
-              </button>
-            </div>
-            <div>{totalRecordBU && PageInfoBU()}</div>
-          </div>
-
-          <br />
-
-          <button
-            onClick={() => {
-              setIsOpenBU(false);
-              setPageNumberBU(1);
-            }}
-            style={{
-              border: "none",
-              backgroundColor: "#e8e8e8",
-              borderRadius: "10px",
-              padding: "5px 20px",
-              marginRight: "10px",
-            }}
-          >
-            Close
-          </button>
-          <button
-            onClick={() => {}}
-            style={{
-              border: "none",
-              backgroundColor: "black",
-              color: "white",
-              borderRadius: "10px",
-              padding: "5px 20px",
-            }}
-          >
-            Select
-          </button>
-        </div>
-      </Modal>
 
       <Modal
         open={openChangePassword}

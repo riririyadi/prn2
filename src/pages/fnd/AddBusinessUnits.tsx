@@ -557,8 +557,7 @@ export default function AddBusinessUnits({
             'Content-Type': 'application/json',
             Accept: 'application/json',
             apikey: apiKey,
-            clientsignature: md5hash,
-            log: 'YES',
+            clientsignature: md5hash
           },
         }
       )
@@ -633,7 +632,6 @@ export default function AddBusinessUnits({
             Accept: 'application/json',
             apikey: apiKey,
             clientsignature: md5hash,
-            log: 'YES',
           },
         }
       )

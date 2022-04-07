@@ -46,23 +46,29 @@ export const Lov = ({
       height={height}
       close={close}
     >
-      <div style={{ marginBottom: "10px", boxSizing: "border-box" }}>
+      <div style={{ marginBottom: "10px" }}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
             setKeyword(searchQuery);
+            setPageNumber(1);
           }}
         >
-          <div>
-            <label>Search</label>
-            <input
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button type="submit" className="menu-icon">
-              <FaSearch />
-            </button>
+          <div className="container-box">
+            <div className="search-box">
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Search.."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+
+              <button className="search-button" type="submit">
+                <FaSearch />
+              </button>
+            </div>
           </div>
         </form>
       </div>
@@ -75,32 +81,10 @@ export const Lov = ({
       />
       <br />
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <button
-          style={{
-            border: "none",
-            backgroundColor: "#e8e8e8",
-            borderRadius: "10px",
-            padding: "5px 20px",
-            width: "100px",
-            marginRight: "10px",
-            height: "35px",
-          }}
-          onClick={handleClose}
-        >
+        <button className="secondary-btn btn-left" onClick={handleClose}>
           Close
         </button>
-        <button
-          style={{
-            border: "none",
-            backgroundColor: "black",
-            color: "white",
-            borderRadius: "10px",
-            padding: "5px 20px",
-            height: "35px",
-            width: "100px",
-          }}
-          onClick={handleSelect}
-        >
+        <button className="primary-btn" onClick={handleSelect}>
           Select
         </button>
       </div>

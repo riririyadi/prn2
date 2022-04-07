@@ -25,7 +25,7 @@ function Login() {
   const handleLogin = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!username || !password || errorMessage) {
+    if (!username || !password) {
       return;
     }
     setIsLoading(true);
@@ -153,34 +153,15 @@ function Login() {
             onChange={() => setIsChecked(!isChecked)}
           />{' '}
           Show Password
+          <br/>
           <button
-            style={{
-              marginTop: '10px',
-              width: '100%',
-              border: 'none',
-              borderRadius: '10px',
-              height: '30px',
-              backgroundColor: 'black',
-              color: 'white',
-            }}
+            className="primary-btn" style={{width:"100%", marginTop:"10px"}}
             onClick={handleLogin}
           >
             {isLoading ? <>Logging In...</>:<>Log In</>}
           </button>
         </form>
       </div>
-      {/* <Modal>
-        <Loader />
-      </Modal>
-
-      <Modal>
-        <div className='custom-modal'>
-          <MessageBox
-            message={{ outMessage: errorMessage, status: 1 }}
-            close={() => setErrorMessage('')}
-          />
-        </div>
-      </Modal> */}
     </div>
   );
 }

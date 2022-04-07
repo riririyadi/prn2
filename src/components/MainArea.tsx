@@ -1,4 +1,4 @@
-import '../styles/Main.css';
+import "../styles/Main.css";
 import React, {
   useEffect,
   useState,
@@ -6,21 +6,19 @@ import React, {
   Suspense,
   createContext,
   useContext,
-} from 'react';
-import { AppCtx, ThemeCtx } from '../pages/Home';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import { CgChevronLeft, CgChevronRight, CgCloseR } from 'react-icons/cg';
-import { COMPONENT_MAP } from '../utils/ComponentMapper';
-import HomeIndex from '../pages/HomeIndex';
-import { IoIosClose } from 'react-icons/io';
-import NotFoundV2 from '../pages/NotFoundV2';
-import { useWindowSize } from '../utils/useWindowSize';
+} from "react";
+import { AppCtx } from "../pages/Home";
+import { Route, Routes } from "react-router-dom";
+import { CgChevronLeft, CgChevronRight, CgCloseR } from "react-icons/cg";
+import { COMPONENT_MAP } from "../utils/ComponentMapper";
+import { IoIosClose } from "react-icons/io";
+import NotFoundV2 from "../pages/NotFoundV2";
+import { useWindowSize } from "../utils/useWindowSize";
 
 export const FormIdContext = createContext<number>({} as any);
 
 export default function MainArea(props: any) {
   const [tabList, setTabList, activeTab, setActiveTab] = useContext(AppCtx);
-  const [darkMode, setDarkMode] = useContext(ThemeCtx);
   const { width, height } = useWindowSize();
 
   const { scrollerRef } = props;
@@ -61,13 +59,13 @@ export default function MainArea(props: any) {
 
   return (
     <div
-      id='mainArea'
-      className={`${width < 768 ? 'main-area-collapsed' : 'main-area'}`}
+      id="mainArea"
+      className={`${width < 768 ? "main-area-collapsed" : "main-area"}`}
     >
-      <div id='tabs-parent' ref={myRef2} style={{ position: 'relative' }}>
+      <div id="tabs-parent" ref={myRef2} style={{ position: "relative" }}>
         {tabList.length > 1 && scrollOne && (
           <div
-            className={`tabs-scroller ${darkMode ? 'dark' : 'bright'}`}
+            className="tabs-scroller"
             style={{
               left: 0,
             }}
@@ -78,7 +76,7 @@ export default function MainArea(props: any) {
         )}
         {tabList.length > 1 && scrollOne && (
           <div
-            className={`tabs-scroller ${darkMode ? 'dark' : 'bright'}`}
+            className="tabs-scroller"
             style={{
               right: 0,
             }}
@@ -87,25 +85,30 @@ export default function MainArea(props: any) {
             <CgChevronRight />
           </div>
         )}
-        <div id='tabs' ref={scrollerRef}>
+        <div id="tabs" ref={scrollerRef}>
           {tabList &&
             tabList.map((tab, i) => (
               <div
-                className={`tab ${darkMode ? 'dark' : 'bright'}`}
+                className="tab"
                 key={tab.key}
                 hidden={tab.key === 0 ? true : false}
                 style={{
                   backgroundColor:
-                    activeTab === tab.key ? '#f8f8f8' : '#e8e8e8',
+                    activeTab === tab.key ? "#ffffff" : "#e8e8e8",
                 }}
               >
-                <span
-                  style={{ marginRight: '15px' }}
+                <div
                   onClick={() => setActiveTab(tab.id)}
+                  style={{ width: "100%", height: "100%" }}
                 >
-                  {tab.component.replace(/_/g, ' ')}
-                </span>{' '}
-                <span onClick={() => handleDelete(tab.id)}>
+                  <span className="text-nowrap" style={{ marginRight: "15px" }}>
+                    {tab.component.replace(/_/g, " ")}
+                  </span>
+                </div>
+                <span
+                  className="tab-closer"
+                  onClick={() => handleDelete(tab.id)}
+                >
                   <IoIosClose size={20} />
                 </span>
               </div>
@@ -116,24 +119,24 @@ export default function MainArea(props: any) {
         <div
           key={tab.key}
           hidden={activeTab !== tab.key}
-          style={{ minHeight: '100%' }}
+          style={{ minHeight: "100%" }}
         >
           <FormIdContext.Provider value={tab.formId}>
             <Routes>
               <Route
-                path='/'
+                path="/"
                 element={
                   <Suspense fallback={<>...</>}>
                     {COMPONENT_MAP[tab.component] ? (
                       COMPONENT_MAP[tab.component]
                     ) : (
                       <div
-                        className={darkMode ? 'dark' : 'bright'}
+                        className="component"
                         style={{
-                          minHeight: 'calc(100vh  - 155px)',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
+                          minHeight: "calc(100vh  - 155px)",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
                         }}
                       >
                         <h5>Oops..., Component is not defined yet</h5>
@@ -142,7 +145,7 @@ export default function MainArea(props: any) {
                   </Suspense>
                 }
               />
-              <Route path='*' element={<NotFoundV2 />} />
+              <Route path="*" element={<NotFoundV2 />} />
             </Routes>
           </FormIdContext.Provider>
         </div>

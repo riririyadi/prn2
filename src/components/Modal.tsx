@@ -1,9 +1,7 @@
 import React, {
   FC,
-  forwardRef,
   ReactNode,
   useEffect,
-  useImperativeHandle,
   useRef,
   useState,
 } from "react";
@@ -25,6 +23,11 @@ function useDragging(close: () => void) {
         x: e.x - ref.current!.offsetWidth / 2,
         y: e.y - ref.current!.offsetHeight / 2,
       });
+
+      // setPos({
+      //   x: e.x,
+      //   y: e.y,
+      // });
     }
 
     e.stopPropagation();
@@ -41,7 +44,6 @@ function useDragging(close: () => void) {
     if (e.button !== 0) return;
     if (closeButtonRef.current!.contains(e.target)) {
       close();
-      // setPos({ x: 0, y: 0 });
       return;
     }
     setIsDragging(true);
@@ -51,11 +53,13 @@ function useDragging(close: () => void) {
       y: e.y - ref.current!.offsetHeight / 2,
     });
 
+   
+
     e.stopPropagation();
     e.preventDefault();
   }
 
-  // When the element mounts, attach an mousedown listener
+  
   useEffect(() => {
     ref.current?.addEventListener("mousedown", onMouseDown);
 
@@ -64,8 +68,7 @@ function useDragging(close: () => void) {
     };
   }, [ref.current]);
 
-  // Everytime the isDragging state changes, assign or remove
-  // the corresponding mousemove and mouseup handlers
+
   useEffect(() => {
     if (isDragging) {
       document.addEventListener("mouseup", onMouseUp);
@@ -106,7 +109,7 @@ const ModalFrame: FC<IModalFrameProps> = ({
     <motion.div
       initial={{ opacity: 0.2 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: 0.1 }}
       exit={{ opacity: 0 }}
       className="modal__overlay"
       style={{
@@ -123,6 +126,8 @@ const ModalFrame: FC<IModalFrameProps> = ({
           zIndex: 9999 + level,
           width: width === 0 ? "auto" : width,
           height: height === 0 ? "auto" : height,
+          maxWidth:'calc(100vw - 50px)',
+          maxHeight:'calc(100vh - 20px)',
           left: x === 0 ? ("" as any) : x,
           top: y === 0 ? ("" as any) : y,
         }}

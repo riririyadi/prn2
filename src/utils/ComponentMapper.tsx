@@ -14,8 +14,9 @@ export const COMPONENT_MAP: Record<string, JSX.Element> = {
 
   province: <Province />,
   transaction: <Transaction />,
-  setupblock: <OpenBlock />,
+  OpenBlock: <OpenBlock />,
   homeIndex: <HomeIndex />,
+  responsibility: <Responsibility />,
   form: <Form />,
   users: <Users />,
   Responsibility: <Responsibility />,

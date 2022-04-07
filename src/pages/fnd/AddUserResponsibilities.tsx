@@ -327,7 +327,6 @@ export default function AddUserResponsibilities({
             Accept: 'application/json',
             apikey: apiKey,
             clientsignature: md5hash,
-            log: 'YES',
           },
         }
       )

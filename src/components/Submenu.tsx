@@ -3,7 +3,7 @@ import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
 import { RiArrowRightSLine } from 'react-icons/ri';
 import { ThemeCtx } from '../pages/Home';
 
-//Compound Component
+
 function Subsubmenu({
   item,
   handleAdd,
@@ -20,7 +20,7 @@ function Subsubmenu({
   return (
     <div style={{ margin: '10px 10px', width: '100%' }}>
       <div
-        onDoubleClick={
+        onClick={
           item.sub_menu_name
             ? showSubnav
             : () => handleAdd(item.file_name, item.form_id)
@@ -32,7 +32,7 @@ function Subsubmenu({
           <span>
             <RiArrowRightSLine
               size={20}
-              onDoubleClick={item.sub_menu_name && showSubnav}
+              onClick={item.sub_menu_name && showSubnav}
               className={subnav ? 'rotate down' : 'rotate'}
             />
           </span>
@@ -44,7 +44,7 @@ function Subsubmenu({
             <div
               className='nowrap-text'
               style={{ margin: '20px 15px', cursor: 'pointer' }}
-              onDoubleClick={
+              onClick={
                 s.sub_menu_name
                   ? showSubnav
                   : () => handleAdd(item.file_name, item.form_id)
@@ -75,7 +75,7 @@ export default function Submenu({
   return (
     <div style={{ margin: '10px 10px' }}>
       <div
-        onDoubleClick={
+        onClick={
           item.sub_menu_name
             ? showSubnav
             : () => handleAdd(item.file_name, item.form_id)
@@ -88,7 +88,7 @@ export default function Submenu({
             {' '}
             <RiArrowRightSLine
               size={20}
-              onDoubleClick={item.sub_menu_name && showSubnav}
+              onClick={item.sub_menu_name && showSubnav}
               className={subnav ? 'rotate down' : 'rotate'}
             />
           </span>

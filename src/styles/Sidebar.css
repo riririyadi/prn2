@@ -8,7 +8,7 @@
   left: 0;
   overflow-x: scroll; /* Disable horizontal scroll */
   padding-bottom: 50px; /* Place content 60px from the top */
-  
+  background-color: #e8e8e8;
 }
 .sidenav-collapsed {
   height: 100%; /* 100% Full-height */
@@ -19,8 +19,8 @@
   left: -100%;
   overflow-x: scroll; /* Disable horizontal scroll */
   padding-bottom: 50px; /* Place content 60px from the top */
- 
   transition: 350ms;
+  background-color: #e8e8e8;
 }
 
 .sidenav-collapsed.active {
